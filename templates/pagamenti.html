@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="fw-bold mb-4">I Miei Pagamenti</h2>
+
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+            <h4 class="my-0 fw-normal">Riepilogo Bilancio</h4>
+        </div>
+        <div class="card-body text-center">
+            <h1 class="card-title pricing-card-title {% if bilancio > 0 %}text-success{% elif bilancio < 0 %}text-danger{% endif %}">
+                {{ bilancio|floatformat:2 }} €
+            </h1>
+            <p class="lead">
+                {% if bilancio > 0 %}
+                    Sei in credito. Bravo!
+                {% elif bilancio < 0 %}
+                    Sei in debito. Paga per continuare a giocare!
+                {% else %}
+                    Il tuo bilancio è in pari.
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <h3 class="fw-bold mt-5 mb-3">Dettaglio Movimenti</h3>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col">Data</th>
+                    <th scope="col">Descrizione</th>
+                    <th scope="col" class="text-end">Importo</th>
+                    <th scope="col" class="text-center">Stato</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.date_added|date:"d M Y" }}</td>
+                    <td>{{ payment.payment_type }}</td>
+                    <td class="text-end {% if payment.payment_type == 'Premio' %}text-success{% else %}text-danger{% endif %}">
+                        {% if payment.payment_type != 'Premio' %}-{% endif %}{{ payment.amount|floatformat:2 }} €
+                    </td>
+                    <td class="text-center">
+                        {% if payment.is_paid %}
+                            <span class="badge bg-success">Pagato</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">Da Pagare</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-4">Nessun movimento registrato.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

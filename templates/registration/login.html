@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center align-items-center" style="min-height: 60vh;">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-lg border-0 rounded-3">
+            <div class="card-body p-5">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold">Bentornato!</h2>
+                    <p class="text-muted">Inserisci le tue credenziali per accedere alla Fantalega.</p>
+                </div>
+                
+                {% if form.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        Nome utente o password non corretti. Riprova.
+                    </div>
+                {% endif %}
+
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    <!-- Form renderizzato automaticamente da Django, a cui diamo lo stile di Bootstrap -->
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary w-100 btn-lg mt-3">Accedi</button>
+                    <input type="hidden" name="next" value="{{ next }}">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

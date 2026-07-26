@@ -1,0 +1,1 @@
+# Questo file permette a Python di riconoscere la cartella come un modulo.
