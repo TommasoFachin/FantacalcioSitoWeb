@@ -2,62 +2,90 @@
 
 {% block content %}
 <div class="container mt-4">
-    <h2 class="fw-bold mb-4">I Miei Pagamenti</h2>
 
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header">
-            <h4 class="my-0 fw-normal">Riepilogo Bilancio</h4>
+    {% if is_admin_view %}
+        <!-- VISTA AMMINISTRATORE -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="page-title fw-bold">Dashboard Pagamenti</h2>
+            <a href="{% url 'admin:payments_payment_add' %}" class="btn btn-success">
+                ➕ Aggiungi Pagamento
+            </a>
         </div>
-        <div class="card-body text-center">
-            <h1 class="card-title pricing-card-title {% if bilancio > 0 %}text-success{% elif bilancio < 0 %}text-danger{% endif %}">
-                {{ bilancio|floatformat:2 }} €
-            </h1>
-            <p class="lead">
-                {% if bilancio > 0 %}
-                    Sei in credito. Bravo!
-                {% elif bilancio < 0 %}
-                    Sei in debito. Paga per continuare a giocare!
-                {% else %}
-                    Il tuo bilancio è in pari.
-                {% endif %}
-            </p>
-        </div>
-    </div>
+        <p class="text-muted">In questa pagina puoi visualizzare e gestire tutti i pagamenti della lega.</p>
 
-    <h3 class="fw-bold mt-5 mb-3">Dettaglio Movimenti</h3>
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
-            <thead class="table-light">
-                <tr>
-                    <th scope="col">Data</th>
-                    <th scope="col">Descrizione</th>
-                    <th scope="col" class="text-end">Importo</th>
-                    <th scope="col" class="text-center">Stato</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for payment in payments %}
-                <tr>
-                    <td>{{ payment.date_added|date:"d M Y" }}</td>
-                    <td>{{ payment.payment_type }}</td>
-                    <td class="text-end {% if payment.payment_type == 'Premio' %}text-success{% else %}text-danger{% endif %}">
-                        {% if payment.payment_type != 'Premio' %}-{% endif %}{{ payment.amount|floatformat:2 }} €
-                    </td>
-                    <td class="text-center">
-                        {% if payment.is_paid %}
-                            <span class="badge bg-success">Pagato</span>
-                        {% else %}
-                            <span class="badge bg-warning text-dark">Da Pagare</span>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="4" class="text-center text-muted py-4">Nessun movimento registrato.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Utente</th>
+                            <th>Tipo</th>
+                            <th>Importo</th>
+                            <th>Stato</th>
+                            <th>Data</th>
+                            <th>Azioni</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for payment in all_payments %}
+                        <tr>
+                            <td><strong>{{ payment.user.username }}</strong></td>
+                            <td>{{ payment.get_payment_type_display }}</td>
+                            <td class="fw-bold {% if payment.payment_type == 'Premio' %}text-success{% else %}text-danger{% endif %}">
+                                € {{ payment.amount }}
+                            </td>
+                            <td>
+                                {% if payment.is_paid %}
+                                    <span class="badge bg-success">Saldato</span>
+                                {% else %}
+                                    <span class="badge bg-warning text-dark">Da Saldare</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ payment.date_added|date:"d/m/Y" }}</td>
+                            <td>
+                                <a href="{% url 'admin:payments_payment_change' payment.id %}" class="btn btn-sm btn-outline-primary">Modifica</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center p-4">Nessun pagamento registrato.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    {% else %}
+        <!-- VISTA UTENTE NORMALE -->
+        <h2 class="page-title fw-bold mb-4">I Miei Pagamenti</h2>
+
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-body text-center">
+                <h5 class="card-title text-muted">Saldo Complessivo (sui movimenti saldati)</h5>
+                <p class="display-4 fw-bold {% if bilancio >= 0 %}text-success{% else %}text-danger{% endif %}">
+                    € {{ bilancio|floatformat:2 }}
+                </p>
+            </div>
+        </div>
+
+        <h4 class="mt-5">Dettaglio Movimenti</h4>
+        <ul class="list-group">
+            {% for payment in payments %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ payment.get_payment_type_display }}</strong>
+                    {% if payment.note %}<small class="d-block text-muted">{{ payment.note }}</small>{% endif %}
+                </div>
+                <span class="badge {% if payment.is_paid %}bg-success{% else %}bg-warning text-dark{% endif %} p-2">
+                    € {{ payment.amount }} - {% if payment.is_paid %}Saldato{% else %}Pendente{% endif %}
+                </span>
+            </li>
+            {% empty %}
+            <li class="list-group-item">Nessun movimento registrato.</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
 </div>
 {% endblock %}

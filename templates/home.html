@@ -1,14 +1,52 @@
+
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="p-5 mb-4 bg-white rounded-3 shadow border text-center">
-    <div class="container-fluid py-5">
-        <h1 class="display-5 fw-bold text-success">Benvenuto nella FANTALEGA VsC</h1>
-        <p class="col-md-8 mx-auto fs-4">Il portale ufficiale per ammirare l'Albo d'oro e rivivere la storia della nostra Fantalega.</p>
-        <hr class="my-4">
-        <a href="/trophies/" class="btn btn-primary btn-lg mt-3">Vai all'Albo d'Oro</a>
-        <a href="{% url 'storia' %}" class="btn btn-outline-secondary btn-lg mt-3"> Storia Fantalega</a>
-
+<!-- Sezione di benvenuto (Hero) con sfondo -->
+<div class="p-5 mb-5 rounded-3 shadow text-center hero-section">
+    <div class="container-fluid py-4">
+        <h1 class="display-4 fw-bold">🏆 FANTALEGA VsC 🏆</h1>
+        <p class="col-lg-8 mx-auto fs-4">
+            Il portale ufficiale per consultare l'Albo d'oro, le rose e rivivere i momenti epici della nostra lega.
+        </p>
     </div>
+</div>
+
+<!-- Sezione con le card di presentazione -->
+<div class="row text-center g-4">
+
+    <!-- Card Albo d'Oro -->
+    <div class="col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body d-flex flex-column">
+                <h2 class="card-title">🥇 Albo d'Oro</h2>
+                <p class="card-text flex-grow-1">Chi sono i campioni? Scopri i vincitori di ogni edizione e le loro imprese.</p>
+                <a href="{% url 'trophies:list' %}" class="btn btn-primary">Consulta l'Albo</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Rose -->
+    <div class="col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body d-flex flex-column">
+                <h2 class="card-title">👕 Rose Aggiornate</h2>
+                <p class="card-text flex-grow-1">Analizza le squadre, studia le strategie e scopri i giocatori di ogni partecipante.</p>
+                <a href="{% url 'rose_home' %}" class="btn btn-success">Visualizza le Rose</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Galleria -->
+    <div class="col-lg-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body d-flex flex-column">
+                <h2 class="card-title">📸 Galleria</h2>
+                <p class="card-text flex-grow-1">Rivivi i momenti più belli e divertenti della lega attraverso foto e video.</p>
+                <a href="{% url 'media:list' %}" class="btn btn-outline-secondary">Entra nella Galleria</a>
+            </div>
+        </div>
+    </div>
+
 </div>
 {% endblock %}
