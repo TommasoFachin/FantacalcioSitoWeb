@@ -8,7 +8,10 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('storia/', views.storia, name='storia'),
     path('regolamento/', views.regolamento, name='regolamento'),
-    path('rose/', views.rose, name='rose'),
+    # Modificato: ora punta alla pagina di selezione dell'anno
+    path('rose/', views.rose_home, name='rose_home'),
+    # Aggiunto: nuovo URL per visualizzare le rose di un anno specifico
+    path('rose/<str:year>/', views.rose, name='rose_detail'),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')), # Per login, logout, etc.
     path('pagamenti/', include(('apps.payments.urls', 'payments'), namespace='payments')),

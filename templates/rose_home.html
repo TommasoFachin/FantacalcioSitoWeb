@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="text-center">
+        <h2 class="page-title fw-bold mb-4">Archivio Rose</h2>
+        <p class="fs-5 text-muted">Seleziona una stagione per visualizzare le rose complete.</p>
+    </div>
+
+    <div class="list-group w-50 mx-auto mt-5">
+        {% for season in seasons %}
+            <a href="{% url 'rose_detail' season.id %}" class="list-group-item list-group-item-action text-center fs-4">
+                Stagione {{ season.name }}
+            </a>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FANTALEGA VsC</title>
-    <!-- Integrazione Bootstrap 5 -->
+
+    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Il tuo CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
+
 <body class="bg-light">
 
     <!-- Navbar -->
@@ -22,7 +28,7 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'trophies:list' %}">Albo D'oro</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'storia' %}">La Storia</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'media:list' %}">Galleria</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'rose' %}">Rose</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'rose_home' %}">Rose</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'payments:list' %}">I Miei Pagamenti</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'regolamento' %}">Regolamento</a></li>
                 </ul>
