@@ -14,9 +14,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'your-default-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DJANGO_DEBUG', 'True') == 'True'
+# In produzione, DEBUG deve essere False.
+# Questa configurazione imposta DEBUG a True solo se la variabile d'ambiente DJANGO_DEBUG è impostata su 'True'.
+# Su PythonAnywhere, questa variabile non sarà impostata, quindi DEBUG sarà correttamente False.
+DEBUG = os.getenv('DJANGO_DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['TommasoFachin.pythonanywhere.com', 'localhost', '127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [
@@ -116,3 +119,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Configurazione Login
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+# in settings.py, alla fine del file
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
