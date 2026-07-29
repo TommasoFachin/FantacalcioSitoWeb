@@ -19,7 +19,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'your-default-secret-key')
 # Su PythonAnywhere, questa variabile non sarà impostata, quindi DEBUG sarà correttamente False.
 DEBUG = os.getenv('DJANGO_DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['TommasoFachin.pythonanywhere.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['fantalegavsc.pythonanywhere.com', '127.0.0.1', 'localhost']
 
 # Application definition
 INSTALLED_APPS = [
