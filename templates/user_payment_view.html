@@ -1,0 +1,13 @@
+<h2 class="page-title fw-bold mb-4">I Miei Pagamenti</h2>
+
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body text-center">
+        <h5 class="card-title text-muted">Saldo Complessivo (sui movimenti saldati)</h5>
+        <p class="display-4 fw-bold {% if bilancio >= 0 %}text-success{% else %}text-danger{% endif %}">
+            € {{ bilancio|floatformat:2 }}
+        </p>
+    </div>
+</div>
+
+<h4 class="mt-5">Dettaglio Movimenti</h4>
+{% include 'partials/payment_list_items.html' with payments=payments %}

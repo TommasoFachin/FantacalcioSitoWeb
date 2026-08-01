@@ -4,6 +4,29 @@
 <div class="container mt-4">
 
     {% if is_admin_view %}
+        <!-- VISTA UTENTE (per l'admin) -->
+        <div class="mb-5">
+            <h2 class="page-title fw-bold mb-4">Il Mio Saldo Personale</h2>
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-muted">Saldo Complessivo (sui movimenti saldati)</h5>
+                    <p class="display-4 fw-bold {% if bilancio >= 0 %}text-success{% else %}text-danger{% endif %}">
+                        € {{ bilancio|floatformat:2 }}
+                    </p>
+                </div>
+            </div>
+            <h4 class="mt-5">Dettaglio Miei Movimenti</h4>
+            <ul class="list-group">
+                {% for payment in payments %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div><strong>{{ payment.get_payment_type_display }}</strong>{% if payment.note %}<small class="d-block text-muted">{{ payment.note }}</small>{% endif %}</div>
+                    <span class="badge {% if payment.is_paid %}bg-success{% else %}bg-warning text-dark{% endif %} p-2">€ {{ payment.amount }} - {% if payment.is_paid %}Saldato{% else %}Pendente{% endif %}</span>
+                </li>
+                {% empty %}<li class="list-group-item">Nessun movimento registrato.</li>{% endfor %}
+            </ul>
+        </div>
+        <hr class="my-5">
+
         <!-- VISTA AMMINISTRATORE -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="page-title fw-bold">Dashboard Pagamenti</h2>
