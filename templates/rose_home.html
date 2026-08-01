@@ -8,12 +8,16 @@
         <p class="fs-5 text-muted">Seleziona una stagione per visualizzare le rose complete.</p>
     </div>
 
-    <div class="list-group w-50 mx-auto mt-5">
-        {% for season in seasons %}
-            <a href="{% url 'rose_detail' season.id %}" class="list-group-item list-group-item-action text-center fs-4">
-                Stagione {{ season.name }}
-            </a>
-        {% endfor %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8 col-lg-6">
+            <div class="list-group shadow-sm">
+                {% for season in seasons %}
+                    <a href="{% url 'rose_detail' season.id %}" class="list-group-item list-group-item-action text-center fs-4 py-3">
+                        Stagione {{ season.name }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 
 </div>
