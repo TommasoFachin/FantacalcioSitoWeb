@@ -1,60 +1,55 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<div class="container mt-4">
-    <!-- Il titolo ora è dinamico in base all'anno selezionato -->
-    <h2 class="page-title fw-bold mb-4 text-center">Rose Fantalega {{ season_year }}</h2>
+<div class="container py-4">
+
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Rose della Stagione</h1>
+        <p class="lead text-muted">{{ season_year }}</p>
+    </div>
 
     {% if error %}
-        <div class="alert alert-danger" role="alert">
-            <strong>Errore:</strong> {{ error }}
+        <div class="alert alert-danger shadow-sm" role="alert">
+            <h4 class="alert-heading">Oops! Qualcosa è andato storto.</h4>
+            <p>{{ error }}</p>
+            <hr>
+            <p class="mb-0">Assicurati che il file Excel per questa stagione sia presente e formattato correttamente.</p>
         </div>
     {% else %}
-
-        {% for team, players in teams.items %}
-        <div class="team-card mb-5">
-
-            <!-- Header squadra -->
-            <div class="team-header">
-                <h3 class="team-name">{{ team }}</h3>
+        <div class="row g-4">
+            {% for team_name, players in teams.items %}
+            <div class="col-lg-6 mb-4">
+                <div class="team-card">
+                    <div class="team-header {% cycle 'team-header-color-1' 'team-header-color-2' 'team-header-color-3' 'team-header-color-4' %}">
+                        <h3 class="team-name">{{ team_name }}</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table players-table mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-center" style="width: 80px;">Ruolo</th>
+                                    <th>Calciatore</th>
+                                    <th>Squadra</th>
+                                    <th class="text-center" style="width: 80px;">Costo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for player in players %}
+                                <tr>
+                                    <td class="text-center"><span class="role role-{{ player.ruolo }}">{{ player.ruolo }}</span></td>
+                                    <td class="fw-bold">{{ player.calciatore }}</td>
+                                    <td>{{ player.squadra }}</td>
+                                    <td class="text-center">{{ player.costo }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-
-            <!-- Tabella giocatori -->
-            <table class="players-table">
-                <thead>
-                    <tr>
-                        <th>Ruolo</th>
-                        <th>Calciatore</th>
-                        <th>Squadra</th>
-                        <th>Costo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for p in players %}
-                    <tr>
-                        <td>
-                            {% if p.ruolo == "P" %}
-                                <span class="role role-P">P</span>
-                            {% elif p.ruolo == "D" %}
-                                <span class="role role-D">D</span>
-                            {% elif p.ruolo == "C" %}
-                                <span class="role role-C">C</span>
-                            {% elif p.ruolo == "A" %}
-                                <span class="role role-A">A</span>
-                            {% endif %}
-                        </td>
-                        <td>{{ p.calciatore }}</td>
-                        <td>{{ p.squadra }}</td>
-                        <td>{{ p.costo }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-
-
+            {% endfor %}
         </div>
-        {% endfor %}
-
     {% endif %}
 </div>
 {% endblock %}

@@ -16,8 +16,8 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'your-default-secret-key')
 # SECURITY WARNING: don't run with debug turned on in production!
 # In produzione, DEBUG deve essere False.
 # Questa configurazione imposta DEBUG a True solo se la variabile d'ambiente DJANGO_DEBUG è impostata su 'True'.
-# Su PythonAnywhere, questa variabile non sarà impostata, quindi DEBUG sarà correttamente False.
-DEBUG = os.getenv('DJANGO_DEBUG') == 'True'
+# Su PythonAnywhere, imposteremo una variabile d'ambiente `DEBUG_VALUE` a `False`.
+DEBUG = os.getenv('DEBUG_VALUE', 'True') == 'True'
 
 ALLOWED_HOSTS = ['fantalegavsc.pythonanywhere.com', '127.0.0.1', 'localhost']
 
@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'fantalega', # Aggiungiamo l'app principale
     'apps.users',
     'apps.trophies',
     'apps.payments',
