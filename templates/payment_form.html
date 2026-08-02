@@ -14,10 +14,11 @@
                         
                         {% for field in form %}
                             {% if field.name == 'is_paid' %}
-                                <div class="form-check form-switch mb-3 p-3 border rounded-3 bg-light">
-                                    {{ field }}
-                                    <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                                    {% if field.help_text %}<small class="form-text text-muted d-block">{{ field.help_text }}</small>{% endif %}
+                                <div class="mb-3 p-3 border rounded-3 bg-light">
+                                    <div class="form-check form-switch d-flex align-items-center">
+                                        {{ field }}
+                                        <label class="form-check-label ms-3" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    </div>
                                 </div>
                             {% else %}
                                 <div class="mb-3">
