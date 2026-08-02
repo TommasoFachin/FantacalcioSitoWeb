@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <h2 class="card-title fw-bold text-center mb-4">
+                        <i class="fas fa-plus-circle me-2 text-success"></i>Aggiungi Pagamento
+                    </h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        {% for field in form %}
+                            {% if field.name == 'is_paid' %}
+                                <div class="form-check form-switch mb-3 p-3 border rounded-3 bg-light">
+                                    {{ field }}
+                                    <label class="form-check-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    {% if field.help_text %}<small class="form-text text-muted d-block">{{ field.help_text }}</small>{% endif %}
+                                </div>
+                            {% else %}
+                                <div class="mb-3">
+                                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                    {{ field }}
+                                    {% if field.help_text %}<small class="form-text text-muted">{{ field.help_text }}</small>{% endif %}
+                                    {% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        <button type="submit" class="btn btn-success w-100 btn-lg mt-4"><i class="fas fa-save me-2"></i>Salva Pagamento</button>
+                        <a href="{% url 'payments:list' %}" class="btn btn-outline-secondary w-100 mt-2">Annulla</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_head %}
+<!-- Aggiungiamo Font Awesome per le icone -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% endblock %}

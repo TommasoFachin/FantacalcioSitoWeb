@@ -1,6 +1,8 @@
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib import messages
 from .models import Payment
+from .forms import PaymentForm
 
 @login_required # Solo gli utenti loggati possono vedere il proprio bilancio
 def payment_list(request):
@@ -25,3 +27,20 @@ def payment_list(request):
         context['all_payments'] = all_payments
 
     return render(request, 'pagamenti.html', context)
+
+
+def is_admin(user):
+    return user.is_staff
+
+@user_passes_test(is_admin) # Solo gli admin possono aggiungere pagamenti
+def payment_add(request):
+    if request.method == 'POST':
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Pagamento aggiunto con successo!')
+            return redirect('payments:list')
+    else:
+        form = PaymentForm()
+
+    return render(request, 'payment_form.html', {'form': form})
