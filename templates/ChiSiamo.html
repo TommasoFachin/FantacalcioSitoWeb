@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_head %}
+<style>
+    .flip-card {
+        background-color: transparent;
+        perspective: 1000px; /* Effetto 3D */
+        min-height: 300px; /* Assicura che la card abbia un'altezza minima */
+        cursor: pointer;
+    }
+
+    .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+    }
+
+    /* Aggiungi la classe 'flipped' quando si clicca */
+    .flip-card.flipped .flip-card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .flip-card-front, .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden; /* Per Safari */
+        backface-visibility: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--bs-card-border-radius);
+    }
+
+    .flip-card-front {
+        background-color: var(--bs-card-bg);
+    }
+
+    .flip-card-back {
+        background-color: #f8f9fa; /* Un colore di sfondo leggermente diverso per il retro */
+        transform: rotateY(180deg);
+        padding: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Intestazione della pagina -->
+    <div class="row mb-5 justify-content-center">
+        <div class="col-md-8 text-center">
+            <h1 class="display-4 fw-bold">I Fantallenatori</h1>
+            <p class="lead text-muted">I protagonisti della FANTALEGA VsC.</p>
+        </div>
+    </div>
+
+    <!-- Griglia con i profili degli allenatori -->
+    <div class="row g-4 justify-content-center">
+        {% for manager in managers %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <!-- Contenitore per l'effetto flip -->
+            <div class="card h-100 shadow-sm border-0 flip-card" onclick="this.classList.toggle('flipped')">
+                <div class="flip-card-inner">
+                    <!-- LATO FRONTALE DELLA CARD -->
+                    <div class="flip-card-front p-4">
+                        <!-- Contenitore per immagine profilo e stemma -->
+                        <div class="position-relative mb-3">
+                            <!-- Immagine del profilo -->
+                            <img src="{% static 'img/'|add:manager.username|add:'.jpg' %}"
+                                 class="rounded-circle"
+                                 alt="Foto di {{ manager.username }}"
+                                 width="120"
+                                 height="120"
+                                 style="object-fit: cover; border: 3px solid #dee2e6;"
+                                 onerror="this.onerror=null; this.src=&quot;{% static 'img/placeholder.png' %}&quot;;">
+
+                            <!-- Stemma della squadra (overlay) -->
+                            <img src="{% static 'img/'|add:manager.username|add:'Logo.png' %}"
+                                 alt="Stemma squadra"
+                                 class="position-absolute bottom-0 end-0 bg-light rounded-circle p-1"
+                                 style="width: 40px; height: 40px; border: 2px solid #dee2e6; object-fit: contain;"
+                                 onerror="this.style.display='none';">
+                        </div>
+                        <!-- Nome Squadra -->
+                        <h5 class="card-title fw-bold text-dark mb-1">
+                            {% if manager.teams.first %}{{ manager.teams.first.name }}{% else %}N/D{% endif %}
+                        </h5>
+
+                        <!-- Nome Allenatore (username) -->
+                        <p class="card-text text-muted">@{{ manager.username }}</p>
+                    </div>
+
+                    <!-- LATO POSTERIORE DELLA CARD -->
+                    <div class="flip-card-back">
+                        <!-- Stemma grande -->
+                        <img src="{% static 'img/'|add:manager.username|add:'Logo.jpg' %}"
+                             alt="Stemma di {{ manager.teams.first.name|default:'squadra' }}"
+                             width="100"
+                             height="100"
+                             style="object-fit: contain; margin-bottom: 15px;"
+                             onerror="this.style.display='none';">
+                        
+                        <h5 class="fw-bold">{% if manager.teams.first %}{{ manager.teams.first.name }}{% else %}N/D{% endif %}</h5>
+                        
+                        <!-- Testo di presentazione -->
+                        <p class="small text-muted">
+                            Qui puoi inserire una breve biografia o una citazione famosa dell'allenatore. Un motto, una filosofia di gioco o i suoi più grandi successi.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

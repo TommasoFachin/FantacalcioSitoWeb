@@ -2,12 +2,21 @@ from django.shortcuts import render
 import openpyxl
 import os
 from django.conf import settings
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 def home(request):
     return render(request, 'home.html')
 
 def storia(request):
     return render(request, 'history.html')
+
+def chi_siamo(request):
+    # Recupera tutti gli utenti tranne 'admin' e le loro squadre associate
+    managers = User.objects.exclude(username='admin').prefetch_related('teams').order_by('username')
+    context = {'managers': managers}
+    return render(request, 'ChiSiamo.html', context)
 
 def rose_home(request):
     # In futuro, potresti generare questa lista dinamicamente

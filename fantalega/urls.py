@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('', views.home, name='home'),
     path('storia/', views.storia, name='storia'),
+    path('chi-siamo/', views.chi_siamo, name='chi_siamo'),
     path('regolamento/', views.regolamento, name='regolamento'),
     # Modificato: ora punta alla pagina di selezione dell'anno
     path('rose/', views.rose_home, name='rose_home'),
